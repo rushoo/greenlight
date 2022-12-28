@@ -24,7 +24,7 @@ type application struct {
 
 func main() {
 	var cfg config
-	flag.IntVar(&cfg.port, "port", 4000, "API server port")
+	flag.IntVar(&cfg.port, "port", 4000, "API  port")
 	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
 	flag.Parse()
 
@@ -36,12 +36,12 @@ func main() {
 	mux.HandleFunc("/v1/healthcheck", app.healthCheckHandler)
 
 	//自定义server以使用自定义的port
-	server := &http.Server{
+	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", cfg.port),
 		Handler: mux,
 	}
-	log.Println("start server at http://localhost:4000")
-	log.Fatal(server.ListenAndServe())
+	log.Printf("starting %s  on %s", cfg.env, srv.Addr)
+	log.Fatal(srv.ListenAndServe())
 }
 func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "status: available")
