@@ -32,19 +32,12 @@ func main() {
 		config: cfg,
 		logger: log.New(os.Stdout, "", log.Ldate|log.Ltime),
 	}
-	mux := http.NewServeMux()
-	mux.HandleFunc("/v1/healthcheck", app.healthCheckHandler)
 
 	//自定义server以使用自定义的port
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", cfg.port),
-		Handler: mux,
+		Handler: app.route(),
 	}
 	log.Printf("starting %s  on %s", cfg.env, srv.Addr)
 	log.Fatal(srv.ListenAndServe())
-}
-func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "status: available")
-	fmt.Fprintf(w, "environment: %s\n", app.config.env)
-	fmt.Fprintf(w, "version: %s\n", version)
 }
