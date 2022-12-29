@@ -84,7 +84,44 @@
 ```
 - 2、启动一个简单的http服务以监听请求
 - 3、通过命令行管理配置设置以及使用依赖注入
+```
+var cfg config
+flag.IntVar(&cfg.port, "port", 4000, "API  port")
+flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
+flag.Parse()
+//省略了相关结构体定义
+app := &application{
+	config: cfg,
+	logger: log.New(os.Stdout, "", log.Ldate|log.Ltime),
+}
+//自定义server以使用自定义的port
+srv := &http.Server{
+	Addr:    fmt.Sprintf(":%d", cfg.port),
+	Handler: app.route(),
+}
+log.Fatal(srv.ListenAndServe())
+```
 - 4、引入`httprouter`包以实现restful接口
 
 
+两个问题：
+1、并未真正使用自定义的日志
+
+### 第二步
+更新程序使客户端得以返回json格式响应
+```
+//一种方式是直接以json格式定义好数据
+js := `{"status": "available", "environment": %q, "version": %q}`
+js = fmt.Sprintf(js, app.config.env, version)
+w.Write([]byte(js))
+
+//一种方式是原生的golang数据类型(包括map、slice、struct)序列化为json
+data := map[string]string{
+	"status":      "available",
+	"environment": app.config.env,
+	"version":     version,
+}
+js, _ := json.Marshal(data)  //省略了错误处理和响应头设置
+w.Write(js)
+```
 

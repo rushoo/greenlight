@@ -30,7 +30,8 @@ func main() {
 
 	app := &application{
 		config: cfg,
-		logger: log.New(os.Stdout, "", log.Ldate|log.Ltime),
+		//这个logger还并没有被真正地使用
+		logger: log.New(os.Stdout, "", log.Ldate), //|log.Ltime),
 	}
 
 	//自定义server以使用自定义的port
