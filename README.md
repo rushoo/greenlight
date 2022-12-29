@@ -108,7 +108,7 @@ log.Fatal(srv.ListenAndServe())
 1、并未真正使用自定义的日志
 
 ### 第二步
-更新程序使客户端得以返回json格式响应
+1、更新程序使客户端得以返回json格式响应
 ```
 //一种方式是直接以json格式定义好数据
 js := `{"status": "available", "environment": %q, "version": %q}`
@@ -124,4 +124,4 @@ data := map[string]string{
 js, _ := json.Marshal(data)  //省略了错误处理和响应头设置
 w.Write(js)
 ```
-
+2、请求`localhost:4000/v1/movies/:id`返回json格式movies信息
