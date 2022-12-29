@@ -124,4 +124,7 @@ data := map[string]string{
 js, _ := json.Marshal(data)  //省略了错误处理和响应头设置
 w.Write(js)
 ```
-2、请求`localhost:4000/v1/movies/:id`返回json格式movies信息
+2、请求`localhost:4000/v1/movies/:id`返回json格式movies信息    
+3、丰富错误输出信息：   
+定义方法返回json格式自定义错误；        
+通过httprouter的`router.NotFound = http.HandlerFunc(app.notFoundResponse)`这种方式对于非预期请求使用自定义错误处理

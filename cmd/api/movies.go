@@ -64,7 +64,8 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		//	解析不了，那么可能是请求的id并非数字,返回一个404
 		//http.NotFound(w, r)
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		app.notFoundResponse(w, r)
+		//http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	//使用一个movie结构体用来传递movie信息
@@ -78,7 +79,6 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 	}
 	err = app.writeJSON(w, 200, envelope{"movie": movie}, nil)
 	if err != nil {
-		app.logger.Println(err)
-		http.Error(w, "The server encountered a problem and could not process your request", http.StatusInternalServerError)
+		app.serverErrorResponse(w, r, err)
 	}
 }
