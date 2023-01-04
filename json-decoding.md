@@ -86,7 +86,7 @@ $ curl -X POST localhost:4000/v1/movies
 | 错误类型                       | 原因               |
 |----------------------------|------------------|
 | io.EOF                     | 读取错误，请求体内容为空     |
-| io.ErrUnexpectedEOF        | 读取错误，一般可能是符号少了一半 |
+| io.ErrUnexpectedEOF        | 读取错误，一般是符号不对称    |
 | json.SyntaxError           | json处理错误，内容含语法错误 |
 | json.UnmarshalTypeError    | JSON处理错误，字段类型不匹配 |
 | json.InvalidUnmarshalError | JSON处理错误，函数传值有问题 |
